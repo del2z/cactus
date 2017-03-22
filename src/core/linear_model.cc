@@ -29,11 +29,15 @@ void Linear::train(const DMatrix& samples, ErrType err_type, RegType reg_type,
         ind_vec.push_back(k);
     }
 
-    this->init_coeff(0, 0.1, samples.num_cols());
+    this->init_coeff(0, 0.01, samples.num_cols());
 
     int32_t num_steps = samples.num_rows() / batch_size;
-    float eta = 0.1;
-    for (int32_t epoch = 0; epoch < 10; ++epoch) {
+    float eta = 0.002;
+    for (int32_t epoch = 0; epoch < 100; ++epoch) {
+        std::vector<float> preds = this->predict(samples);
+        float err_ep = err_obj.getBatchErrorMean(samples.ydata(), preds);
+        std::cout << "MSE in " << epoch << " epoch: " << err_ep << std::endl;
+        
         std::random_shuffle(ind_vec.begin(), ind_vec.end());
         for (int32_t step = 0; step < num_steps; ++step) {
             std::vector<float> grad_coeff_vec = std::vector<float>();
@@ -55,16 +59,14 @@ void Linear::train(const DMatrix& samples, ErrType err_type, RegType reg_type,
                     }
                 }
             }
-            this->bias_ += eta * optimizer.getUpdate(grad_bias);
+            this->bias_ += eta * optimizer.getUpdate(grad_bias) / batch_size;
             std::vector<float> dwt = optimizer.getAllUpdate(grad_coeff_vec);
             for (int32_t j = 0; j < this->coeff_.size(); ++j) {
-                this->coeff_[j] += eta * dwt.at(j);
+                this->coeff_[j] += eta * dwt.at(j) / batch_size;
             }
-            eta = eta / sqrt(1 + epoch * num_steps + step);
+            eta = eta;// * 0.99999; // / sqrt(1 + epoch * num_steps + step);
+            //std::cout << eta << std::endl;
         }
-        std::vector<float> preds = this->predict(samples);
-        float err_ep = err_obj.getBatchErrorMean(samples.ydata(), preds);
-        std::cout << "MSE in " << epoch << " epoch: " << err_ep << std::endl;
     }
     return;
 }

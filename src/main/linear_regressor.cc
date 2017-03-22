@@ -26,6 +26,8 @@ int main(int argc, char** argv) {
     if (FLAGS_task.compare("train") == 0) {
         cactus::DataParser parser = cactus::DataParser();
         cactus::DMatrix train_data = parser.load(FLAGS_train_data, "svm");
+        std::cout << train_data.num_rows() << " " << train_data.num_cols() << std::endl;
+        //cactus::print(train_data.getRow(35));
         cactus::Linear linr = cactus::Linear();
         linr.train(train_data, cactus::MSE, cactus::L2, cactus::SGD);
         linr.evaluate(train_data);
