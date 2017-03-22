@@ -5,12 +5,14 @@
 //------------------------------------------------------------------------------
 #include "utils/string_alg.h"
 
+#include <string.h>
+
 namespace cactus {
 
-const std::vector<std::string>& splitString(const std::string& str, const char* delim) {
+std::vector<std::string> splitString(const std::string& str, const char* delim) {
     std::vector<std::string> str_vec;
     char* pch;
-    pch = strtok(str.c_str(), delim);
+    pch = strtok((char*)str.c_str(), delim);
     while (pch != NULL) {
         pch = strtok(NULL, delim);
         str_vec.push_back(std::string(pch));

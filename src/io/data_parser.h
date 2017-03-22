@@ -20,12 +20,12 @@ class DataParser {
     virtual ~DataParser() {}
 
   private:
-    const DMatrix& load_svm(const std::string& file_in) const;
+    const DMatrix load_svm(const std::string& file_in) const;
     //const DMatrix& load_csv(const std::string& file_in, char prefix) const;
     int32_t dump_csv(const DVector& data, const std::string& file_out) const;
 
   public:
-    const DMatrix& load(const std::string& file_in, const std::string& format) const;
+    const DMatrix load(const std::string& file_in, const std::string& format) const;
     int32_t dump(const DVector& data, const std::string& file_out) const;
 
 };

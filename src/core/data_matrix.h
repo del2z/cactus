@@ -34,8 +34,8 @@ class SMatrix {
     inline int32_t num_rows() const;
     inline int32_t num_cols() const;
     inline const std::vector<SVector>& xdata() const;
-    inline const DVector& getRow(int32_t row_ind) const;
-    inline const DVector& getCol(int32_t col_ind) const;
+    inline const DVector getRow(int32_t row_ind) const;
+    inline const DVector getCol(int32_t col_ind) const;
 
     virtual int32_t append(const SVector& svec);
     virtual int32_t remove(int32_t row_ind);
@@ -54,7 +54,7 @@ inline const std::vector<SVector>& SMatrix::xdata() const {
     return this->xdata_;
 }
 
-inline const DVector& SMatrix::getRow(int32_t row_ind) const {
+inline const DVector SMatrix::getRow(int32_t row_ind) const {
     if (row_ind < 0 || row_ind >= this->num_rows()) {
         std::cerr << "[ERROR] Row index out of range." << std::endl;
         throw 102;
@@ -62,7 +62,7 @@ inline const DVector& SMatrix::getRow(int32_t row_ind) const {
     return DVector(this->xdata_.at(row_ind), this->num_cols());
 }
 
-inline const DVector& SMatrix::getCol(int32_t col_ind) const {
+inline const DVector SMatrix::getCol(int32_t col_ind) const {
     if (col_ind < 0 || col_ind >= this->num_cols()) {
         std::cerr << "[ERROR] Column index out of range." << std::endl;
         throw 102;

@@ -11,7 +11,7 @@
 
 namespace cactus {
 
-const std::vector<std::string>& splitString(const std::string& str, const char* delim);
+std::vector<std::string> splitString(const std::string& str, const char* delim);
 
 } // namespace cactus
 
