@@ -32,7 +32,7 @@ void Linear::train(const DMatrix& samples, ErrType err_type, RegType reg_type,
     this->init_coeff(0, 0.01, samples.num_cols());
 
     int32_t num_steps = samples.num_rows() / batch_size;
-    float eta = 0.002;
+    float eta = 0.003;
     for (int32_t epoch = 0; epoch < 100; ++epoch) {
         std::vector<float> preds = this->predict(samples);
         float err_ep = err_obj.getBatchErrorMean(samples.ydata(), preds);
