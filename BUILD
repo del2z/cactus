@@ -36,9 +36,7 @@ cc_library(
     hdrs = [
         "src/io/data_parser.h",
     ],
-    includes = ["src", 'external/toft',],
     deps = [
-        #"//external:toft",
         ":core-lib",
         ":util-lib",
     ],
