@@ -6,7 +6,7 @@
 #include "io/data_parser.h"
 
 #include <fstream>
-
+#include "glog/logging.h"
 #include "utils/string_alg.h"
 #include "core/data_matrix.h"
 
@@ -36,7 +36,7 @@ const DMatrix DataParser::load_svm(const std::string& file_in) const {
         ifs.close();
         return dmat;
     } else {
-        std::cerr << "[ERROR] Cannot open file '" << file_in << "'." << std::endl;
+        LOG(ERROR) << "Cannot open file '" << file_in << "'.";
         throw 103;
     }
 }
@@ -49,7 +49,7 @@ int32_t DataParser::dump_csv(const DVector& data,
 const DMatrix DataParser::load(const std::string& file_in,
         const std::string& format) const {
     if (format.compare("svm") == 0) {
-        return load_svm(file_in);
+        return this->load_svm(file_in);
     } else {
         return DMatrix();
     }
