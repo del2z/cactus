@@ -14,7 +14,7 @@ cc_library(
         "src/core/regularizer.h",
         "src/core/optimizer.h",
     ],
-    includes = ["src"]
+    includes = ["src"],
 )
 
 cc_library(
@@ -36,11 +36,10 @@ cc_library(
     hdrs = [
         "src/io/data_parser.h",
     ],
-    includes = ["src", 'external/toft',],
     deps = [
-        #"//external:toft",
         ":core-lib",
         ":util-lib",
+        "//external:glog",
     ],
 )
 
@@ -73,8 +72,9 @@ cc_binary(
         "src/main/linear_regressor.cc"
     ],
     deps = [
-        "//external:gflags",
         ":io-lib",
         ":linear-lib",
+        "//external:gflags",
+        "//external:glog",
     ],
 )

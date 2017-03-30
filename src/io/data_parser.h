@@ -21,7 +21,6 @@ class DataParser {
 
   private:
     const DMatrix load_svm(const std::string& file_in) const;
-    //const DMatrix& load_csv(const std::string& file_in, char prefix) const;
     int32_t dump_csv(const DVector& data, const std::string& file_out) const;
 
   public:

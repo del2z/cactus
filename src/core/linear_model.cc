@@ -64,9 +64,8 @@ void Linear::train(const DMatrix& samples, ErrType err_type, RegType reg_type,
             for (int32_t j = 0; j < this->coeff_.size(); ++j) {
                 this->coeff_[j] += eta * dwt.at(j) / batch_size;
             }
-            eta = eta;// * 0.99999; // / sqrt(1 + epoch * num_steps + step);
-            //std::cout << eta << std::endl;
         }
+        eta = eta * 0.96;
     }
     return;
 }
