@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "core/objective.h"
 
+#include "glog/logging.h"
+
 namespace cactus {
 
 Objective::Objective()
@@ -24,7 +26,7 @@ float Objective::getError(float label, float pred) const {
 const std::vector<float> Objective::getBatchError(const std::vector<float>& labels,
         const std::vector<float>& preds) const {
     if (labels.size() != preds.size() || labels.size() <= 0 || preds.size() <= 0) {
-        std::cerr << "[ERROR] Empty vector or Unequal size." << std::endl;
+        LOG(ERROR) << "Empty vector or Unequal size.";
         throw 104;
     }
 
@@ -70,7 +72,7 @@ float Objective::getGrad(float label, float pred) const {
 const std::vector<float> Objective::getBatchGrad(const std::vector<float>& labels,
         const std::vector<float>& preds) const {
     if (labels.size() != preds.size() || labels.size() <= 0 || preds.size() <= 0) {
-        std::cerr << "[ERROR] Empty vector or Unequal size." << std::endl;
+        LOG(ERROR) << "Empty vector or Unequal size.";
         throw 104;
     }
 

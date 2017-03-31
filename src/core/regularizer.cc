@@ -6,6 +6,7 @@
 #include "core/regularizer.h"
 
 #include <iostream>
+#include "glog/logging.h"
 
 namespace cactus {
 
@@ -26,7 +27,7 @@ float Regularizer::getReg(float param) const {
 const std::vector<float> Regularizer::getBatchReg(
         const std::vector<float>& params) const {
     if (params.size() <= 0) {
-        std::cerr << "[ERROR] Empty vector." << std::endl;
+        LOG(ERROR) << "Empty vector.";
         throw 104;
     }
 
@@ -55,7 +56,7 @@ float Regularizer::getGrad(float param) const {
 const std::vector<float> Regularizer::getBatchGrad(
         const std::vector<float>& params) const {
     if (params.size() <= 0) {
-        std::cerr << "[ERROR] Empty vector." << std::endl;
+        LOG(ERROR) << "Empty vector.";
         throw 104;
     }
 

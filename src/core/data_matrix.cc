@@ -6,6 +6,7 @@
 #include "core/data_matrix.h"
 
 #include <cmath>
+#include "glog/logging.h"
 
 namespace cactus {
 
@@ -29,7 +30,7 @@ int32_t SMatrix::append(const SVector& svec) {
 
 int32_t SMatrix::remove(int32_t row_ind) {
     if (row_ind < 0 || row_ind >= this->num_rows()) {
-        std::cerr << "[ERROR] Row index out of range." << std::endl;
+        LOG(ERROR) << "Row index out of range.";
         throw 102;
     }
     auto ptr = this->xdata_.begin();

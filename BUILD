@@ -15,6 +15,9 @@ cc_library(
         "src/core/optimizer.h",
     ],
     includes = ["src"],
+    deps = [
+        "//external:glog",
+    ],
 )
 
 cc_library(

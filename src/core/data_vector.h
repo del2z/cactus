@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <vector>
 #include <iostream>
+#include "glog/logging.h"
 
 namespace cactus {
 
@@ -46,8 +47,8 @@ inline float Entry::value() const {
 
 inline void Entry::setIndex(int32_t index) {
     if (index < 0) {
-        std::cerr << "[ERROR] Illegal entry index '" << index <<
-            "' (must be non-negative)." << std::endl;
+        LOG(ERROR) << "Illegal entry index '" << index <<
+            "' (must be non-negative).";
         throw 101;
     } else {
         this->index_ = index;

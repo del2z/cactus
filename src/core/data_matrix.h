@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <vector>
 #include <iostream>
+#include "glog/logging.h"
 
 #include "core/data_vector.h"
 
@@ -56,7 +57,7 @@ inline const std::vector<SVector>& SMatrix::xdata() const {
 
 inline const DVector SMatrix::getRow(int32_t row_ind) const {
     if (row_ind < 0 || row_ind >= this->num_rows()) {
-        std::cerr << "[ERROR] Row index out of range." << std::endl;
+        LOG(ERROR) << "Row index out of range.";
         throw 102;
     }
     return DVector(this->xdata_.at(row_ind), this->num_cols());
@@ -64,7 +65,7 @@ inline const DVector SMatrix::getRow(int32_t row_ind) const {
 
 inline const DVector SMatrix::getCol(int32_t col_ind) const {
     if (col_ind < 0 || col_ind >= this->num_cols()) {
-        std::cerr << "[ERROR] Column index out of range." << std::endl;
+        LOG(ERROR) << "Column index out of range.";
         throw 102;
     }
     DVector dvec = DVector(SVector(), this->num_rows());
@@ -105,7 +106,7 @@ inline const std::vector<float>& DMatrix::ydata() const {
 
 inline float DMatrix::getY(int32_t row_ind) const {
     if (row_ind < 0 || row_ind >= this->num_rows()) {
-        std::cerr << "[ERROR] Row index out of range." << std::endl;
+        LOG(ERROR) << "Row index out of range.";
         throw 102;
     }
     return this->ydata_.at(row_ind);

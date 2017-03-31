@@ -36,7 +36,7 @@ const DMatrix DataParser::load_svm(const std::string& file_in) const {
         ifs.close();
         return dmat;
     } else {
-        LOG(ERROR) << "Cannot open file '" << file_in << "'.";
+        LOG(FATAL) << "Cannot open file '" << file_in << "'.";
         throw 103;
     }
 }

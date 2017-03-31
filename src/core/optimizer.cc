@@ -5,6 +5,8 @@
 //------------------------------------------------------------------------------
 #include "core/optimizer.h"
 
+#include "glog/logging.h"
+
 namespace cactus {
 
 Optimizer::Optimizer()
@@ -30,7 +32,7 @@ float Optimizer::getUpdate(float grad) const {
 
 const std::vector<float> Optimizer::getAllUpdate(const std::vector<float>& grads) const {
     if (grads.size() <= 0) {
-        std::cerr << "[ERROR] Empty vector." << std::endl;
+        LOG(ERROR) << "Empty vector.";
         throw 104;
     }
 

@@ -6,6 +6,7 @@
 #include "core/data_vector.h"
 
 #include <cmath>
+#include "glog/logging.h"
 
 namespace cactus {
 
@@ -33,8 +34,8 @@ SVector::~SVector() {
 
 float SVector::getValue(int32_t index) const {
     if (index < 0) {
-        std::cerr << "[ERROR] Illegal index '" << index <<
-            "' (must be non-negative)." << std::endl;
+        LOG(ERROR) << "Illegal index '" << index <<
+            "' (must be non-negative).";
         throw 101;
     }
     for (auto itr = this->data_.begin(); itr != this->data_.end(); ++itr) {
@@ -49,8 +50,8 @@ float SVector::getValue(int32_t index) const {
 
 int32_t SVector::append(int32_t index, float value) {
     if (index < 0) {
-        std::cerr << "[ERROR] Illegal index '" << index <<
-            "' (must be non-negative)." << std::endl;
+        LOG(ERROR) << "Illegal index '" << index <<
+            "' (must be non-negative).";
         throw 101;
     }
     if (this->data_.empty() || index > this->data_.back().index()) {
@@ -89,7 +90,7 @@ DVector::~DVector() {
 
 float DVector::getValue(int32_t index) const {
     if (index < 0 || index >= this->size()) {
-        std::cerr << "[ERROR] Index out of range." << std::endl;
+        LOG(ERROR) << "Index out of range.";
         throw 102;
     }
     return SVector::getValue(index);
