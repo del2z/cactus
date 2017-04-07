@@ -12,25 +12,25 @@
 
 namespace cactus {
 
-const DMatrix DataParser::load_svm(const std::string& file_in) const {
+const DMatrix DataParser::LoadSvm_(const std::string& file_in) const {
     std::ifstream ifs(file_in, std::ios::in);
     if (ifs.is_open()) {
         DMatrix dmat = DMatrix();
         std::string line;
         while (std::getline(ifs, line)) {
-            std::vector<std::string> str_vec = splitString(line, " ");
+            std::vector<std::string> str_vec = SplitString(line, " ");
             float label = atof(str_vec.at(0).c_str());
             SVector svec = SVector();
             for (auto itr = str_vec.begin() + 1; itr != str_vec.end(); ++itr) {
-                std::vector<std::string> entry = splitString(*itr, ":");
+                std::vector<std::string> entry = SplitString(*itr, ":");
                 if (entry.size() != 2) continue;
 
                 int32_t index = atoi(entry.at(0).c_str());
                 float value = atof(entry.at(1).c_str());
-                svec.append(index, value);
+                svec.Append(index, value);
             }
             if (!svec.empty()) {
-                dmat.append(svec, label);
+                dmat.Append(svec, label);
             }
         }
         ifs.close();
@@ -41,21 +41,21 @@ const DMatrix DataParser::load_svm(const std::string& file_in) const {
     }
 }
 
-int32_t DataParser::dump_csv(const DVector& data,
+int32_t DataParser::DumpCsv_(const DVector& data,
         const std::string& file_out) const {
     return 0;
 }
 
-const DMatrix DataParser::load(const std::string& file_in,
+const DMatrix DataParser::Load(const std::string& file_in,
         const std::string& format) const {
     if (format.compare("svm") == 0) {
-        return this->load_svm(file_in);
+        return this->LoadSvm_(file_in);
     } else {
         return DMatrix();
     }
 }
 
-int32_t DataParser::dump(const DVector& data,
+int32_t DataParser::Dump(const DVector& data,
         const std::string& file_out) const {
     return 0;
 }

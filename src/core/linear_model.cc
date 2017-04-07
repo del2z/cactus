@@ -43,15 +43,15 @@ void Linear::train(const DMatrix& samples, ErrType err_type, RegType reg_type,
             std::vector<float> grad_coeff_vec = std::vector<float>();
             float grad_bias = 0;
             for (int32_t k = 0; k < batch_size; ++k) {
-                DVector feat = samples.getRow(ind_vec.at(step * batch_size + k));
-                float label = samples.getY(ind_vec.at(step * batch_size + k));
+                DVector feat = samples.GetRow(ind_vec.at(step * batch_size + k));
+                float label = samples.GetY(ind_vec.at(step * batch_size + k));
                 float pred = this->calc_pred(feat);
                 float grad_pred = err_obj.getGrad(label, pred);
 
                 grad_bias += grad_pred;
                 if (grad_coeff_vec.empty()) {
                     for (int32_t j = 0; j < this->coeff_.size(); ++j) {
-                        grad_coeff_vec.push_back(grad_pred * feat.getValue(j));
+                        grad_coeff_vec.push_back(grad_pred * feat.GetValue(j));
                     }
                 } else {
                     for (auto itr = feat.data().begin(); itr != feat.data().end(); ++itr) {
@@ -73,7 +73,7 @@ void Linear::train(const DMatrix& samples, ErrType err_type, RegType reg_type,
 const std::vector<float> Linear::predict(const DMatrix& samples) const {
     std::vector<float> yhat_vec = std::vector<float>();
     for (int32_t k = 0; k < samples.num_rows(); ++k) {
-        DVector feat = samples.getRow(k);
+        DVector feat = samples.GetRow(k);
         yhat_vec.push_back(this->calc_pred(feat));
     }
     return yhat_vec;
@@ -83,7 +83,7 @@ void Linear::evaluate(const DMatrix& samples) const {
     std::vector<float> yhat_vec = this->predict(samples);
     float err = 0;
     for (int32_t k = 0; k < samples.num_rows(); ++k) {
-        float resi = yhat_vec.at(k) - samples.getY(k);
+        float resi = yhat_vec.at(k) - samples.GetY(k);
         err += resi * resi;
     }
     std::cout << "Mean Squared Error: " << err / samples.num_rows() << std::endl;

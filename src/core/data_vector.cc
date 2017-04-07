@@ -32,7 +32,7 @@ SVector::~SVector() {
     this->data_.clear();
 }
 
-float SVector::getValue(int32_t index) const {
+float SVector::GetValue(int32_t index) const {
     if (index < 0) {
         LOG(ERROR) << "Illegal index '" << index <<
             "' (must be non-negative).";
@@ -48,7 +48,7 @@ float SVector::getValue(int32_t index) const {
     return 0;
 }
 
-int32_t SVector::append(int32_t index, float value) {
+int32_t SVector::Append(int32_t index, float value) {
     if (index < 0) {
         LOG(ERROR) << "Illegal index '" << index <<
             "' (must be non-negative).";
@@ -58,14 +58,14 @@ int32_t SVector::append(int32_t index, float value) {
         this->data_.push_back(Entry(index, value));
         return 0;
     }
-    return 1;
+    return -1;
 }
 
-int32_t SVector::append(const Entry& entry) {
-    return this->append(entry.index(), entry.value());
+int32_t SVector::Append(const Entry& entry) {
+    return this->Append(entry.index(), entry.value());
 }
 
-void SVector::clear() {
+void SVector::Clear() {
     this->data_.clear();
 }
 
@@ -88,28 +88,28 @@ DVector::~DVector() {
     this->size_ = 0;
 }
 
-float DVector::getValue(int32_t index) const {
+float DVector::GetValue(int32_t index) const {
     if (index < 0 || index >= this->size()) {
         LOG(ERROR) << "Index out of range.";
         throw 102;
     }
-    return SVector::getValue(index);
+    return SVector::GetValue(index);
 }
 
-int32_t DVector::append(int32_t index, float value) {
-    int32_t ec = SVector::append(index, value);
+int32_t DVector::Append(int32_t index, float value) {
+    int32_t ec = SVector::Append(index, value);
     if (ec == 0) {
         this->size_ = std::max(this->size() + 1, index + 1);
     }
     return ec;
 }
 
-int32_t DVector::append(const Entry& entry) {
-    return this->append(entry.index(), entry.value());
+int32_t DVector::Append(const Entry& entry) {
+    return this->Append(entry.index(), entry.value());
 }
 
-void DVector::clear() {
-    SVector::clear();
+void DVector::Clear() {
+    SVector::Clear();
     this->size_ = 0;
 }
 

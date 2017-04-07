@@ -34,13 +34,13 @@ int main(int argc, char** argv) {
         }
 
         cactus::DataParser* parser = new cactus::DataParser();
-        cactus::DMatrix train_data = parser->load(FLAGS_train_data, "svm");
+        cactus::DMatrix train_data = parser->Load(FLAGS_train_data, "svm");
         VLOG(1) << "training dataset (" << train_data.num_rows() << ", "
             << train_data.num_cols() << ")";
 
         cactus::DMatrix test_data = cactus::DMatrix();
         if (FLAGS_test_data.compare("") != 0) {
-            test_data = parser->load(FLAGS_test_data, "svm");
+            test_data = parser->Load(FLAGS_test_data, "svm");
             VLOG(1) << "testing dataset (" << test_data.num_rows() << ", "
                 << test_data.num_cols() << ")";
         }
@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
         }
 
         cactus::DataParser* parser = new cactus::DataParser();
-        cactus::DMatrix pred_data = parser->load(FLAGS_pred_data, "svm");
+        cactus::DMatrix pred_data = parser->Load(FLAGS_pred_data, "svm");
         VLOG(1) << "predicting dataset (" << pred_data.num_rows() << ", "
             << pred_data.num_cols() << ")";
     }

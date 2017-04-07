@@ -31,10 +31,10 @@ class Entry {
     inline int32_t index() const;
     inline float value() const;
 
-    inline void setIndex(int32_t index);
-    inline void setValue(float value);
-    inline void set(int32_t index, float value);
-    inline void set(const Entry& entry);
+    inline void SetIndex(int32_t index);
+    inline void SetValue(float value);
+    inline void Set(int32_t index, float value);
+    inline void Set(const Entry& entry);
 };
 
 inline int32_t Entry::index() const {
@@ -45,7 +45,7 @@ inline float Entry::value() const {
     return this->value_;
 }
 
-inline void Entry::setIndex(int32_t index) {
+inline void Entry::SetIndex(int32_t index) {
     if (index < 0) {
         LOG(ERROR) << "Illegal entry index '" << index <<
             "' (must be non-negative).";
@@ -55,17 +55,17 @@ inline void Entry::setIndex(int32_t index) {
     }
 }
 
-inline void Entry::setValue(float value) {
+inline void Entry::SetValue(float value) {
     this->value_ = value;
 }
 
-inline void Entry::set(int32_t index, float value) {
-    this->setIndex(index);
-    this->setValue(value);
+inline void Entry::Set(int32_t index, float value) {
+    this->SetIndex(index);
+    this->SetValue(value);
 }
 
-inline void Entry::set(const Entry& entry) {
-    this->set(entry.index(), entry.value());
+inline void Entry::Set(const Entry& entry) {
+    this->Set(entry.index(), entry.value());
 }
 
 /*
@@ -86,11 +86,11 @@ class SVector {
   public:
     inline const std::vector<Entry>& data() const;
     inline bool empty() const;
-    virtual float getValue(int32_t index) const;
-
-    virtual int32_t append(int32_t index, float value);
-    virtual int32_t append(const Entry& entry);
-    virtual void clear();
+    
+    virtual float GetValue(int32_t index) const;
+    virtual int32_t Append(int32_t index, float value);
+    virtual int32_t Append(const Entry& entry);
+    virtual void Clear();
 };
 
 inline const std::vector<Entry>& SVector::data() const {
@@ -116,11 +116,11 @@ class DVector : public SVector {
 
   public:
     inline int32_t size() const;
-    virtual float getValue(int32_t index) const;
-
-    virtual int32_t append(int32_t index, float value);
-    virtual int32_t append(const Entry& entry);
-    virtual void clear();
+    
+    virtual float GetValue(int32_t index) const;
+    virtual int32_t Append(int32_t index, float value);
+    virtual int32_t Append(const Entry& entry);
+    virtual void Clear();
 };
 
 inline int32_t DVector::size() const {

@@ -21,14 +21,14 @@ SMatrix::~SMatrix() {
     this->xdata_.clear();
 }
 
-int32_t SMatrix::append(const SVector& svec) {
+int32_t SMatrix::Append(const SVector& svec) {
     this->xdata_.push_back(svec);
     this->num_rows_ += 1;
     this->num_cols_ = std::max(this->num_cols(), svec.data().back().index() + 1);
     return 0;
 }
 
-int32_t SMatrix::remove(int32_t row_ind) {
+int32_t SMatrix::Remove(int32_t row_ind) {
     if (row_ind < 0 || row_ind >= this->num_rows()) {
         LOG(ERROR) << "Row index out of range.";
         throw 102;
@@ -39,7 +39,7 @@ int32_t SMatrix::remove(int32_t row_ind) {
     return 0;
 }
 
-void SMatrix::clear() {
+void SMatrix::Clear() {
     this->xdata_.clear();
     this->num_rows_ = 0;
     this->num_cols_ = 0;
@@ -55,13 +55,13 @@ DMatrix::~DMatrix() {
     this->ydata_.clear();
 }
 
-int32_t DMatrix::append(const SVector& svec, float yval) {
+int32_t DMatrix::Append(const SVector& svec, float yval) {
     this->ydata_.push_back(yval);
-    return SMatrix::append(svec);
+    return SMatrix::Append(svec);
 }
 
-int32_t DMatrix::remove(int32_t row_ind) {
-    int32_t ec = SMatrix::remove(row_ind);
+int32_t DMatrix::Remove(int32_t row_ind) {
+    int32_t ec = SMatrix::Remove(row_ind);
     if (ec == 0) {
         auto ptr = this->ydata_.begin();
         this->ydata_.erase(ptr + row_ind);
@@ -69,8 +69,8 @@ int32_t DMatrix::remove(int32_t row_ind) {
     return ec;
 }
 
-void DMatrix::clear() {
-    SMatrix::clear();
+void DMatrix::Clear() {
+    SMatrix::Clear();
     this->ydata_.clear();
 }
 

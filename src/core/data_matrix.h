@@ -35,12 +35,13 @@ class SMatrix {
     inline int32_t num_rows() const;
     inline int32_t num_cols() const;
     inline const std::vector<SVector>& xdata() const;
-    inline const DVector getRow(int32_t row_ind) const;
-    inline const DVector getCol(int32_t col_ind) const;
 
-    virtual int32_t append(const SVector& svec);
-    virtual int32_t remove(int32_t row_ind);
-    virtual void clear();
+    inline const DVector GetRow(int32_t row_ind) const;
+    inline const DVector GetCol(int32_t col_ind) const;
+
+    virtual int32_t Append(const SVector& svec);
+    virtual int32_t Remove(int32_t row_ind);
+    virtual void Clear();
 };
 
 inline int32_t SMatrix::num_rows() const {
@@ -55,7 +56,7 @@ inline const std::vector<SVector>& SMatrix::xdata() const {
     return this->xdata_;
 }
 
-inline const DVector SMatrix::getRow(int32_t row_ind) const {
+inline const DVector SMatrix::GetRow(int32_t row_ind) const {
     if (row_ind < 0 || row_ind >= this->num_rows()) {
         LOG(ERROR) << "Row index out of range.";
         throw 102;
@@ -63,7 +64,7 @@ inline const DVector SMatrix::getRow(int32_t row_ind) const {
     return DVector(this->xdata_.at(row_ind), this->num_cols());
 }
 
-inline const DVector SMatrix::getCol(int32_t col_ind) const {
+inline const DVector SMatrix::GetCol(int32_t col_ind) const {
     if (col_ind < 0 || col_ind >= this->num_cols()) {
         LOG(ERROR) << "Column index out of range.";
         throw 102;
@@ -71,8 +72,8 @@ inline const DVector SMatrix::getCol(int32_t col_ind) const {
     DVector dvec = DVector(SVector(), this->num_rows());
     int32_t k = 0;
     for (auto itr = this->xdata_.begin(); itr != this->xdata_.end(); ++itr, ++k) {
-        if (itr->getValue(col_ind) != 0) {
-            dvec.append(k, itr->getValue(col_ind));
+        if (itr->GetValue(col_ind) != 0) {
+            dvec.Append(k, itr->GetValue(col_ind));
         }
     }
     return dvec;
@@ -93,18 +94,18 @@ class DMatrix : public SMatrix {
 
   public:
     inline const std::vector<float>& ydata() const;
-    inline float getY(int32_t row_ind) const;
-
-    virtual int32_t append(const SVector& svec, float yval);
-    virtual int32_t remove(int32_t row_ind);
-    virtual void clear();
+    
+    inline float GetY(int32_t row_ind) const;
+    virtual int32_t Append(const SVector& svec, float yval);
+    virtual int32_t Remove(int32_t row_ind);
+    virtual void Clear();
 };
 
 inline const std::vector<float>& DMatrix::ydata() const {
     return this->ydata_;
 }
 
-inline float DMatrix::getY(int32_t row_ind) const {
+inline float DMatrix::GetY(int32_t row_ind) const {
     if (row_ind < 0 || row_ind >= this->num_rows()) {
         LOG(ERROR) << "Row index out of range.";
         throw 102;
