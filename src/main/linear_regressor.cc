@@ -3,18 +3,22 @@
 //
 // Copyright by del2z <delta.z@aliyun.com>
 //------------------------------------------------------------------------------
-
-#include <iostream>
+#include <cstddef>
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
 #include "io/data_parser.h"
-#include "core/linear_model.h"
+#include "objective/obj_mse.h"
+#include "regularizer/reg_l1.h"
+#include "regularizer/reg_l2.h"
+#include "model/linear.h"
 
 DEFINE_string(task, "train,pred", "specific task of learner doing");
 DEFINE_string(learner, "linear,lasso,ridge,elsnet", "regressors for training or predicting");
 DEFINE_double(coef_l1, 0.1, "coefficient of L1 regularization terms, only effective when learner is 'lasso' and 'elsnet'");
 DEFINE_double(coef_l2, 0.1, "coefficient of L2 regularization terms, only effective when learner is 'ridge' and 'elsnet'");
+DEFINE_double(rate, 1.2, "learning rate");
+DEFINE_int32(epoch, 50, "max epoches for optimization");
 DEFINE_string(train_data, "", "data for training model");
 DEFINE_string(test_data, "", "data for evaluating model");
 DEFINE_string(pred_data, "", "data for predicting labels");
@@ -34,22 +38,40 @@ int main(int argc, char** argv) {
         }
 
         cactus::DataParser* parser = new cactus::DataParser();
-        cactus::DMatrix train_data = parser->load(FLAGS_train_data, "svm");
+        cactus::DMatrix train_data = parser->Load(FLAGS_train_data, "svm");
         VLOG(1) << "training dataset (" << train_data.num_rows() << ", "
             << train_data.num_cols() << ")";
 
         cactus::DMatrix test_data = cactus::DMatrix();
         if (FLAGS_test_data.compare("") != 0) {
-            test_data = parser->load(FLAGS_test_data, "svm");
+            test_data = parser->Load(FLAGS_test_data, "svm");
             VLOG(1) << "testing dataset (" << test_data.num_rows() << ", "
                 << test_data.num_cols() << ")";
         }
 
-        cactus::Linear linr = cactus::Linear();
-        linr.train(train_data, cactus::MSE, cactus::L2, cactus::SGD);
-        linr.evaluate(train_data);
+        cactus::Linear* linr = nullptr;
+        if (FLAGS_learner.compare("lasso") == 0) {
+            linr = new cactus::Linear(new cactus::ObjMse(),
+                    new cactus::RegL1(FLAGS_coef_l1),
+                    new cactus::OptSgd(FLAGS_rate));
+        } else if (FLAGS_learner.compare("ridge") == 0) {
+            linr = new cactus::Linear(new cactus::ObjMse(),
+                    new cactus::RegL2(FLAGS_coef_l1),
+                    new cactus::OptSgd(FLAGS_rate));
+        } else if (FLAGS_learner.compare("elsnet") == 0) {
+            linr = new cactus::Linear(new cactus::ObjMse(),
+                    new cactus::RegL2(FLAGS_coef_l1),
+                    new cactus::OptSgd(FLAGS_rate));
+        } else {
+            if (FLAGS_learner.compare("linear") != 0) {
+                LOG(WARNING) << "Undefined learner, using 'linear' instead.";
+            }
+            linr = new cactus::Linear(new cactus::ObjMse(),
+                    new cactus::RegL1(0),
+                    new cactus::OptSgd(FLAGS_rate));
+        }
+        linr->TrainBatch(train_data, FLAGS_epoch);
         if (test_data.num_rows() > 0 && test_data.num_cols() > 0) {
-            linr.evaluate(test_data);
         }
 
         if (FLAGS_model_out.compare("") != 0) {
@@ -65,7 +87,7 @@ int main(int argc, char** argv) {
         }
 
         cactus::DataParser* parser = new cactus::DataParser();
-        cactus::DMatrix pred_data = parser->load(FLAGS_pred_data, "svm");
+        cactus::DMatrix pred_data = parser->Load(FLAGS_pred_data, "svm");
         VLOG(1) << "predicting dataset (" << pred_data.num_rows() << ", "
             << pred_data.num_cols() << ")";
     }

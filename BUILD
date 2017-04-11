@@ -1,79 +1,110 @@
 cc_library(
-    name = "core-lib",
+    name = "core",
     srcs = [
         "src/core/data_vector.cc",
         "src/core/data_matrix.cc",
-        "src/core/objective.cc",
-        "src/core/regularizer.cc",
-        "src/core/optimizer.cc",
     ],
     hdrs = [
         "src/core/data_vector.h",
         "src/core/data_matrix.h",
-        "src/core/objective.h",
-        "src/core/regularizer.h",
-        "src/core/optimizer.h",
     ],
     includes = ["src"],
+    deps = [
+        "//external:glog",
+    ],
 )
 
 cc_library(
-    name = "util-lib",
+    name = "util",
     srcs = [
-        "src/utils/string_alg.cc",
+        "src/util/string_alg.cc",
     ],
     hdrs = [
-        "src/utils/string_alg.h",
+        "src/util/string_alg.h",
     ],
     includes = ["src"],
 )
 
 cc_library(
-    name = "io-lib",
+    name = "io",
     srcs = [
         "src/io/data_parser.cc",
     ],
     hdrs = [
         "src/io/data_parser.h",
     ],
+    includes = ["src"],
     deps = [
-        ":core-lib",
-        ":util-lib",
+        ":core",
+        ":util",
         "//external:glog",
     ],
 )
 
 cc_library(
-    name = "linear-lib",
+    name = "regularizer",
     srcs = [
-        "src/core/linear_model.cc",
+        "src/regularizer/reg_base.cc",
+        "src/regularizer/reg_l1.cc",
+        "src/regularizer/reg_l2.cc",
     ],
     hdrs = [
-        "src/core/linear_model.h",
+        "src/regularizer/reg_base.h",
+        "src/regularizer/reg_l1.h",
+        "src/regularizer/reg_l2.h",
     ],
     includes = ["src"],
     deps = [
-        ":io-lib",
+        "//external:glog",
+    ],
+)
+
+cc_library(
+    name = "model",
+    srcs = [
+        "src/optimizer/opt_base.cc",
+        "src/optimizer/opt_sgd.cc",
+        "src/objective/obj_base.cc",
+        "src/model/model_base.cc",
+        "src/model/linear.cc",
+    ],
+    hdrs = [
+        "src/optimizer/opt_base.h",
+        "src/optimizer/opt_sgd.h",
+        "src/objective/obj_base.h",
+        "src/objective/obj_mse.h",
+        "src/model/model_base.h",
+        "src/model/linear.h",
+    ],
+    includes = ["src"],
+    deps = [
+        ":core",
+        ":regularizer",
+        "//external:glog",
     ],
 )
 
 cc_test(
     name = "dmatrix-test",
-    srcs = ["src/core/unit_test.cc"],
+    srcs = [
+        "src/core/unit_test.cc",
+    ],
     deps = [
+        ":core",
         "//external:gtest",
-        ":core-lib",
     ],
 )
 
 cc_binary(
     name = "linear",
     srcs = [
-        "src/main/linear_regressor.cc"
+        "src/main/linear_regressor.cc",
     ],
+    includes = ["src"],
     deps = [
-        ":io-lib",
-        ":linear-lib",
+        ":io",
+        ":regularizer",
+        ":model",
         "//external:gflags",
         "//external:glog",
     ],

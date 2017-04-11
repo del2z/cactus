@@ -3,13 +3,13 @@
 //
 // Copyright by del2z <delta.z@aliyun.com>
 //------------------------------------------------------------------------------
-#include "utils/string_alg.h"
+#include "util/string_alg.h"
 
 #include <iostream>
 
 namespace cactus {
 
-const std::vector<std::string> splitString(const std::string& str,
+const std::vector<std::string> SplitString(const std::string& str,
         const std::string& delim) {
     std::vector<std::string> str_vec = std::vector<std::string>();
     std::string::size_type pos1 = 0;

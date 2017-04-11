@@ -20,12 +20,12 @@ class DataParser {
     virtual ~DataParser() {}
 
   private:
-    const DMatrix load_svm(const std::string& file_in) const;
-    int32_t dump_csv(const DVector& data, const std::string& file_out) const;
+    const DMatrix LoadSvm_(const std::string& file_in) const;
+    int32_t DumpCsv_(const DVector& data, const std::string& file_out) const;
 
   public:
-    const DMatrix load(const std::string& file_in, const std::string& format) const;
-    int32_t dump(const DVector& data, const std::string& file_out) const;
+    const DMatrix Load(const std::string& file_in, const std::string& format) const;
+    int32_t Dump(const DVector& data, const std::string& file_out) const;
 
 };
 } // namespace cactus
