@@ -26,7 +26,14 @@ void OptSgd::CalcObjGrad(const ObjFunc* obj,
 void OptSgd::CalcUpdate(const std::vector<float>& grad_vec,
         std::vector<float>* delta_vec) {
     delta_vec->clear();
-    std::copy(grad_vec.begin(), grad_vec.end(), std::back_inserter(*delta_vec));
+    float norm_grad = 0;
+    for (int32_t k = 0; k < grad_vec.size(); ++k) {
+        norm_grad += grad_vec.at(k) * grad_vec.at(k);
+    }
+    norm_grad = sqrt(norm_grad + 1e-8);
+    for (int32_t k = 0; k < grad_vec.size(); ++k) {
+        delta_vec->push_back(this->eta_ * grad_vec.at(k) / norm_grad);
+    }
 }
 
 void OptSgd::Train(Model* mdl, const DMatrix& train_mat, int32_t max_epoch) {

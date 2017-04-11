@@ -17,7 +17,8 @@ DEFINE_string(task, "train,pred", "specific task of learner doing");
 DEFINE_string(learner, "linear,lasso,ridge,elsnet", "regressors for training or predicting");
 DEFINE_double(coef_l1, 0.1, "coefficient of L1 regularization terms, only effective when learner is 'lasso' and 'elsnet'");
 DEFINE_double(coef_l2, 0.1, "coefficient of L2 regularization terms, only effective when learner is 'ridge' and 'elsnet'");
-DEFINE_double(rate, 0.2, "learning rate");
+DEFINE_double(rate, 1.2, "learning rate");
+DEFINE_int32(epoch, 50, "max epoches for optimization");
 DEFINE_string(train_data, "", "data for training model");
 DEFINE_string(test_data, "", "data for evaluating model");
 DEFINE_string(pred_data, "", "data for predicting labels");
@@ -69,7 +70,7 @@ int main(int argc, char** argv) {
                     new cactus::RegL1(0),
                     new cactus::OptSgd(FLAGS_rate));
         }
-        linr->TrainBatch(train_data, 50);
+        linr->TrainBatch(train_data, FLAGS_epoch);
         if (test_data.num_rows() > 0 && test_data.num_cols() > 0) {
         }
 
