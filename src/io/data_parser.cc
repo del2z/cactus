@@ -7,7 +7,7 @@
 
 #include <fstream>
 #include "glog/logging.h"
-#include "utils/string_alg.h"
+#include "util/string_alg.h"
 #include "core/data_matrix.h"
 
 namespace cactus {

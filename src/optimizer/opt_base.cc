@@ -5,6 +5,9 @@
 //------------------------------------------------------------------------------
 #include "optimizer/opt_base.h"
 
+#include "objective/obj_base.h"
+#include "model/model_base.h"
+
 namespace cactus {
 
 void Engine::CalcObjError(const ObjFunc* obj,

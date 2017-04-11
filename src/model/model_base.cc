@@ -10,16 +10,16 @@
 
 namespace cactus {
 
-Model::Model(const ObjFunc* obj, Engine* opt)
+Model::Model(ObjFunc* obj, Engine* opt)
         : obj_(obj), reg_(nullptr), opt_(opt) {}
 
-Model::Model(const ObjFunc* obj, const RegFunc* reg, Engine* opt)
+Model::Model(ObjFunc* obj, RegFunc* reg, Engine* opt)
         : obj_(obj), reg_(reg), opt_(opt) {}
 
 Model::~Model() {
-    if (this->obj_) delete this->obj_;
-    if (this->reg_) delete this->reg_;
-    if (this->opt_) delete this->opt_;
+    if (!this->obj_) delete this->obj_;
+    if (!this->reg_) delete this->reg_;
+    if (!this->opt_) delete this->opt_;
 }
 
 float Model::CalcSumError(const std::vector<float>& label_vec,
@@ -32,12 +32,12 @@ float Model::CalcAvgError(const std::vector<float>& label_vec,
     return this->obj_->CalcAvgError(this->opt_, label_vec, pred_vec);
 }
 
-void Model::TrainBatch(const DMatrix& train_mat) {
+void Model::TrainBatch(const DMatrix& train_mat, int32_t max_epoch) {
     if (train_mat.num_rows() <= 0 || train_mat.num_cols() <= 0) {
         LOG(ERROR) << "Empty data set.";
         throw 105;
     }
-    this->opt_->Train(this, train_mat);
+    this->opt_->Train(this, train_mat, max_epoch);
 }
 
 void Model::Predict(const DMatrix& pred_mat,

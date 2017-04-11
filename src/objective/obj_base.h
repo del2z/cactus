@@ -16,6 +16,7 @@ namespace cactus {
 class ObjFunc {
   protected:
     ObjFunc() {}
+  public:
     virtual ~ObjFunc() {}
 
   protected:

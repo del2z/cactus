@@ -23,9 +23,9 @@ class Model {
     Engine* opt_;
 
   protected:
-    Model(const ObjFunc* obj, Engine* opt);
-    Model(const ObjFunc* obj, const RegFunc* reg, Engine* opt);
-    virtual ~Model()
+    Model(ObjFunc* obj, Engine* opt);
+    Model(ObjFunc* obj, RegFunc* reg, Engine* opt);
+    virtual ~Model();
 
   protected:
     virtual float Predict_(const DVector& feat_vec) const = 0;
@@ -35,7 +35,8 @@ class Model {
             const std::vector<float>& pred_vec) const;
     virtual float CalcAvgError(const std::vector<float>& label_vec,
             const std::vector<float>& pred_vec) const;
-    virtual void TrainBatch(const DMatrix& train_mat);
+    virtual void TrainBatch(const DMatrix& train_mat,
+            int32_t max_epoch);
 
     virtual void Predict(const DMatrix& pred_mat,
             std::vector<float>* pred_vec) const;

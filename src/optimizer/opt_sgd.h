@@ -29,7 +29,7 @@ class OptSgd : public Engine {
             std::vector<float>* grad_vec) const;
     virtual void CalcUpdate(const std::vector<float>& grad_vec,
             std::vector<float>* delta_vec);
-    virtual void Train(Model* mdl, const DMatrix& train_mat) const;
+    virtual void Train(Model* mdl, const DMatrix& train_mat, int32_t max_epoch);
 };
 
 } // namespace cactus

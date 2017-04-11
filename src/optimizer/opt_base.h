@@ -8,6 +8,8 @@
 
 #include <vector>
 
+#include "core/data_matrix.h"
+
 namespace cactus {
 
 class ObjFunc;
@@ -24,7 +26,7 @@ class Engine {
             const std::vector<float>& pred_vec,
             std::vector<float>* err_vec) const;
 
-    virtual void Train(Model* mdl, const DMatrix& train_mat) const = 0;
+    virtual void Train(Model* mdl, const DMatrix& train_mat, int32_t max_epoch) = 0;
     virtual void Predict(const Model* mdl, const DMatrix& pred_mat,
             std::vector<float>* pred_vec) const;
 };

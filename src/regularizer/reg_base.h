@@ -13,6 +13,7 @@ namespace cactus {
 class RegFunc {
   protected:
     RegFunc() {}
+  public:
     virtual ~RegFunc() {}
 
   protected:

@@ -7,6 +7,8 @@
 
 #include "glog/logging.h"
 
+#include "optimizer/opt_sgd.h"
+
 namespace cactus {
 
 void ObjFunc::CalcError(const std::vector<float>& label_vec,
@@ -68,7 +70,13 @@ void ObjFunc::CalcBatchGrad(const Engine* opt,
         LOG(ERROR) << "Empty vector or Unequal size.";
         throw 104;
     }
-    opt->CalcObjGrad(this, label_vec, pred_vec, grad_vec);
+
+    const OptSgd* opt_sgd = dynamic_cast<const OptSgd*>(opt);
+    if (!opt_sgd) {
+        LOG(ERROR) << "Non-gradient descent optimizer not suitable for calculating objective's gradients.";
+        throw 107;
+    }
+    opt_sgd->CalcObjGrad(this, label_vec, pred_vec, grad_vec);
 }
 
 } // namespace cactus
