@@ -17,12 +17,14 @@ const DMatrix DataParser::LoadSvm_(const std::string& file_in) const {
     if (ifs.is_open()) {
         DMatrix dmat = DMatrix();
         std::string line;
+        std::vector<std::string> str_vec;
         while (std::getline(ifs, line)) {
-            std::vector<std::string> str_vec = SplitString(line, " ");
+            SplitString(line, " ", &str_vec);
             float label = atof(str_vec.at(0).c_str());
             SVector svec = SVector();
+            std::vector<std::string> entry;
             for (auto itr = str_vec.begin() + 1; itr != str_vec.end(); ++itr) {
-                std::vector<std::string> entry = SplitString(*itr, ":");
+                SplitString(*itr, ":", &entry);
                 if (entry.size() != 2) continue;
 
                 int32_t index = atoi(entry.at(0).c_str());

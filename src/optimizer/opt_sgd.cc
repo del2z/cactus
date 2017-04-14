@@ -5,6 +5,7 @@
 //------------------------------------------------------------------------------
 #include "optimizer/opt_sgd.h"
 
+#include <iostream>
 #include "model/linear.h"
 
 namespace cactus {
@@ -37,6 +38,7 @@ void OptSgd::CalcUpdate(const std::vector<float>& grad_vec,
 }
 
 void OptSgd::Train(Model* mdl, const DMatrix& train_mat, int32_t max_epoch) {
+    // TODO: add multi-thread support
     Linear* mdl_lin = dynamic_cast<Linear*>(mdl);
     if (!mdl_lin) {
         LOG(ERROR) << "Gradient descent not suitable for non-linear model.";
@@ -54,7 +56,7 @@ void OptSgd::Train(Model* mdl, const DMatrix& train_mat, int32_t max_epoch) {
         std::vector<float> pred_vec;
         mdl_lin->PredictBatch(train_mat, &pred_vec);
         float ep_err = mdl_lin->CalcAvgError(train_mat.ydata(), pred_vec);
-        VLOG(0) << "Error at epoch " << epoch << ": " << ep_err;
+        std::cout << "Error at epoch " << epoch << ": " << ep_err << std::endl;
 
         std::random_shuffle(index_vec.begin(), index_vec.end());
         for (int32_t step = 0; step < num_steps; ++step) {
