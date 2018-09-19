@@ -6,6 +6,7 @@
 #include "optimizer/opt_sgd.h"
 
 #include <iostream>
+#include <algorithm>
 #include "model/linear.h"
 
 namespace cactus {
